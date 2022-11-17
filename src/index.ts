@@ -1,3 +1,9 @@
+export type ReduceParam<T, R> = {
+  func: (a: R, b: T) => R;
+  defaultValue: R | (() => R);
+  defaultValueIsCallable?: boolean;
+};
+
 class LazyArray<T> {
   private _map_list: Array<[boolean, any]>;
 
@@ -15,8 +21,10 @@ class LazyArray<T> {
     return this;
   }
 
-  reduce<R>(rFunc: (a: R, b: T) => R, defaultValue: R): R {
-    let pivot: R = defaultValue;
+  reduce<R>(params: ReduceParam<T, R>): R {
+    let pivot: R = params.defaultValueIsCallable
+      ? (params.defaultValue as any)()
+      : params.defaultValue;
 
     this._innerArray.forEach((element) => {
       for (const [isFilter, func] of this._map_list) {
@@ -27,7 +35,7 @@ class LazyArray<T> {
         }
       }
 
-      pivot = rFunc(pivot, element);
+      pivot = params.func(pivot, element);
     });
 
     return pivot;
@@ -54,5 +62,3 @@ Array.prototype.lazyFilter = function (
   result.lazyFilter(func);
   return result;
 };
-
-export {};
