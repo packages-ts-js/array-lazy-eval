@@ -1,5 +1,5 @@
 {
-  "name": "array-lazy-eval",
+  "name": "@doopjs/array-lazy-eval",
   "version": "1.0.0",
   "description": "New feature to JavaScript's Array",
   "main": "dist/index.js",
@@ -8,7 +8,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build" : "tsc",
-    "prepare" : "npm run build"
+    "prepare" : "npm run build",
+    "publish": "gh release create v1.0.0 --title \"v1.0.0 (beta)\" --notes \"this is a beta release\""
   },
   "repository": {
     "type": "git",
