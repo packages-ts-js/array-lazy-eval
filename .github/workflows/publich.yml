@@ -1,5 +1,6 @@
 name: Publish to NPM
 on:
+  push:
   release:
     types: [created]
 jobs:
@@ -11,11 +12,11 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "16.x"
+          registry-url: "https://registry.npmjs.org"
       - name: Install dependencies and build 🔧
         run: npm ci && npm run build
       - name: Publish package on NPM 📦
-        run: npm publish --access public
+        run: echo "HI" && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
