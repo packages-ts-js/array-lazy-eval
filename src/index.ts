@@ -1,9 +1,3 @@
-export type ReduceParam<T, R> = {
-  func: (a: R, b: T) => R;
-  defaultValue: R | (() => R);
-  defaultValueIsCallable?: boolean;
-};
-
 class LazyArray<T> {
   private _map_list: Array<[boolean, any]>;
 
@@ -11,20 +5,18 @@ class LazyArray<T> {
     this._map_list = [];
   }
 
-  lazyMap(func: (a: any) => any): LazyArray<T> {
+  map(func: (a: any) => any): LazyArray<T> {
     this._map_list.push([false, func]);
     return this;
   }
 
-  lazyFilter(func: (a: any) => boolean): LazyArray<T> {
+  filter(func: (a: any) => boolean): LazyArray<T> {
     this._map_list.push([true, func]);
     return this;
   }
 
-  reduce<R>(params: ReduceParam<T, R>): R {
-    let pivot: R = params.defaultValueIsCallable
-      ? (params.defaultValue as any)()
-      : params.defaultValue;
+  reduce<R>(callback: (a: R, b: T) => R, defaultValue: R): R {
+    let pivot: R = defaultValue;
 
     this._innerArray.forEach((element) => {
       for (const [isFilter, func] of this._map_list) {
@@ -35,30 +27,30 @@ class LazyArray<T> {
         }
       }
 
-      pivot = params.func(pivot, element);
+      pivot = callback(pivot, element);
     });
 
     return pivot;
+  }
+
+  getMany(): Array<T> {
+    return this.reduce((a: Array<T>, b: T) => {
+      a.push(b);
+      return a;
+    }, []);
   }
 }
 
 declare global {
   interface Array<T> {
-    lazyMap(func: (a: T) => any): LazyArray<T>;
-    lazyFilter(func: (a: any) => boolean): LazyArray<T>;
+    lazy(): LazyArray<T>;
   }
 }
 
-Array.prototype.lazyMap = function (func: (a: any) => any): LazyArray<any> {
-  const result = new LazyArray(this);
-  result.lazyMap(func);
-  return result;
-};
+export function lazy<T>(a: Array<T>): LazyArray<T> {
+  return new LazyArray(a);
+}
 
-Array.prototype.lazyFilter = function (
-  func: (a: any) => boolean
-): LazyArray<any> {
-  const result = new LazyArray(this);
-  result.lazyFilter(func);
-  return result;
+Array.prototype.lazy = function (): LazyArray<any> {
+  return new LazyArray(this);
 };
