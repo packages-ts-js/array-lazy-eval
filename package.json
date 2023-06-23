@@ -4,18 +4,25 @@
   "description": "New feature to JavaScript's Array",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist/**/*"],
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build" : "tsc",
-    "prepare" : "npm run build",
+    "build": "tsc",
+    "prepare": "npm run build",
     "release": "gh release create v1.0.1 --title \"v1.0.1 (beta)\" --notes \"this is a beta release\""
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/packages-ts-js/array-lazy-eval.git"
   },
-  "keywords": ["evaluate", "lazy", "array", "fast"],
+  "keywords": [
+    "evaluate",
+    "lazy",
+    "array",
+    "fast"
+  ],
   "author": "Daniel Orlando Ortiz Pacheco",
   "license": "ISC",
   "bugs": {
@@ -23,7 +30,15 @@
   },
   "homepage": "https://github.com/packages-ts-js/array-lazy-eval#readme",
   "devDependencies": {
+    "@types/lodash": "^4.14.190",
+    "@types/node": "^18.11.9",
+    "@types/streamjs": "^1.5.29",
+    "itrabble": "^1.1.1",
+    "lazily": "^2.0.5",
+    "lodash": "^4.17.21",
+    "perf_hooks": "0.0.1",
+    "sequency": "^0.20.0",
+    "streamjs": "^1.6.4",
     "typescript": "^4.7.4"
   }
- 
 }
